@@ -51,15 +51,20 @@ def print_word(word,same_letter_position,same_letter):
     Returns:
       transformed: La palabra aplicando las transformaciones. En el caso anterior: "Cam--"
     """
-    auxWord = "ALOHA"
+    auxWord = ["-","-","-","-","-"]
     for i in range(len(same_letter_position)):
-      auxWord += word[same_letter_position[i]]
-      print(i)
-      
+      auxWord[same_letter_position[i]] = word[same_letter_position[i]].upper()
+    for i in range(len(same_letter)):
+      auxWord[same_letter[i]] = word[same_letter[i]].lower()
+    
+    transformed = ""      
+    for i in range(len(auxWord)):
+      transformed += auxWord[i]
+    return transformed
   
 print_word('CAMPO',tupla[0],tupla[1])
     
-def choose_secret_advanced():
+def choose_secret_advanced(filename):
     """Dado un nombre de fichero, esta función filtra solo las palabras de 5 letras que no tienen acentos (á,é,í,ó,ú). De estas palabras, la función devuelve una lista de 15 aleatorias no repetidas y una de estas 15, se selecciona aleatoriamente como palabra secret.
     Args:
       filename: El nombre del fichero. Ej. "palabras_extended.txt"
@@ -67,7 +72,28 @@ def choose_secret_advanced():
       selected: Lista de 15 palabras aleatorias no repetidas que tienen 5 letras y no tienen acentos
       secret: Palabra elegida aleatoriamente de la lista de 15 seleccionadas transformada a mayúsculas
     """
+    f = open(filename, mode="rt", encoding="utf-8")
+    palabras = f.read()
+    palabras = palabras.upper()
+    palabras = palabras.split("\n")
+    for i in range(len(palabras)):
+      if "Á" in palabras[i]:
+        palabras.remove(palabras[i])
+      if "É" in palabras[i]:
+        palabras.remove(palabras[i])
+      if "Í" in palabras[i]:
+        palabras.remove(palabras[i])
+      if "Ó" in palabras[i]:
+        palabras.remove(palabras[i])
+      if "Ú" in palabras[i]:
+        palabras.remove(palabras[i])
+    for i in range(15):
+      
+    print(palabras)
  
+choose_secret_advanced("palabras_extended.txt")
+
+
 def check_valid_word():
     """Dada una lista de palabras, esta función pregunta al usuario que introduzca una palabra hasta que introduzca una que esté en la lista. Esta palabra es la que devolverá la función.
     Args:
