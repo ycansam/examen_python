@@ -76,21 +76,13 @@ def choose_secret_advanced(filename):
     palabras = f.read()
     palabras = palabras.upper()
     palabras = palabras.split("\n")
+    palabrasAux = []
     for i in range(len(palabras)):
-      if "Á" in palabras[i]:
-        palabras.remove(palabras[i])
-      if "É" in palabras[i]:
-        palabras.remove(palabras[i])
-      if "Í" in palabras[i]:
-        palabras.remove(palabras[i])
-      if "Ó" in palabras[i]:
-        palabras.remove(palabras[i])
-      if "Ú" in palabras[i]:
-        palabras.remove(palabras[i])
-    for i in range(15):
-      
+        for j in range(len(palabras[i])):
+          if palabras[i][j] == "Á" or palabras[i][j] == "É" or palabras[i][j] == "Í" or palabras[i][j] == "Ó" or palabras[i][j] == "Ú":
+            palabras.pop(i)
     print(palabras)
- 
+    
 choose_secret_advanced("palabras_extended.txt")
 
 
