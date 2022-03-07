@@ -1,5 +1,6 @@
 from ctypes import sizeof
 import random
+from select import select
 
 
 def choose_secret(file):
@@ -76,26 +77,45 @@ def choose_secret_advanced(filename):
     palabras = f.read()
     palabras = palabras.upper()
     palabras = palabras.split("\n")
-    palabrasAux = []
     for i in range(len(palabras)):
-        for j in range(len(palabras[i])):
-          if palabras[i][j] == "Á" or palabras[i][j] == "É" or palabras[i][j] == "Í" or palabras[i][j] == "Ó" or palabras[i][j] == "Ú":
-            palabras.pop(i)
-    print(palabras)
+        if len(palabras[i]) > 5:
+          palabras.pop(i)
+  
+    for i in range(len(palabras)):
+        if "Á" in palabras[i] or "É" in palabras[i] or "Í" in palabras[i] or "Ó" in palabras[i] or "Ú" in palabras[i]:
+          palabras.pop(i)
+    selected = []
+    
+    for i in range(15):
+      randomWord = random.choice(palabras)
+      if randomWord in selected:
+          nothing = "nothing"
+      else:
+        selected.append(randomWord)
+        
+    return (selected, random.choice(selected))
     
 choose_secret_advanced("palabras_extended.txt")
 
 
-def check_valid_word():
+def check_valid_word(selected):
     """Dada una lista de palabras, esta función pregunta al usuario que introduzca una palabra hasta que introduzca una que esté en la lista. Esta palabra es la que devolverá la función.
     Args:
       selected: Lista de palabras.
     Returns:
       word: Palabra introducida por el usuario que está en la lista.
     """
+    print("Write a word of 5 letters: ")
+    word = input()
+    for i in range(selected):
+      if selected[i] != word:
+        print("Not in list")
+        check_valid_word(selected)
+      else:
+        return word
 
 if __name__ == "__main__":
-    secret=choose_secret()
+    secret=choose_secret("palabras_reduced.txt")
     print("Palabra a adivinar: "+secret)#Debug: esto es para que sepas la palabra que debes adivinar
     for repeticiones in range(0,6):
         word = input("Introduce una nueva palabra: ")
